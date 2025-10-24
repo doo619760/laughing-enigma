@@ -1,0 +1,5 @@
+# Citation Checker Requirements
+# Install with: pip3 install -r requirements_citation_checker.txt
+
+beautifulsoup4>=4.9.0
+termcolor>=1.1.0

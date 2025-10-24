@@ -1,0 +1,27 @@
+# Example URLs for Citation Checker Testing
+# This file contains sample URLs to test the citation verification tool
+# Lines starting with # are comments and will be ignored
+
+# News and Media
+https://www.bbc.com/news
+https://www.reuters.com
+https://www.nytimes.com
+
+# Social Media (for platform detection)
+https://twitter.com/BBCNews
+https://www.facebook.com/BBCNews
+https://www.linkedin.com/company/bbc
+https://www.instagram.com/bbcnews
+https://www.youtube.com/user/bbcnews
+
+# Research and Academic
+https://arxiv.org
+https://scholar.google.com
+
+# Technology
+https://github.com
+https://stackoverflow.com
+
+# Invalid/Test URLs (to test error handling)
+https://this-domain-does-not-exist-12345.com
+http://example.invalid
