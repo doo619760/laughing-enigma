@@ -1,0 +1,220 @@
+# Legal Citation QA System Configuration
+
+# Application Settings
+app:
+  name: "Legal Citation QA System"
+  version: "1.0.0"
+  environment: "production"  # development, staging, production
+  debug: false
+
+# Logging Configuration
+logging:
+  level: "INFO"  # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "/var/log/citation-qa/app.log"
+  max_size_mb: 100
+  backup_count: 5
+
+# CourtListener API Settings
+courtlistener:
+  base_url: "https://www.courtlistener.com/api/rest/v3/"
+  timeout: 30
+  rate_limit_delay: 0.5  # seconds between requests
+  retry_attempts: 3
+  retry_backoff: 2.0
+
+# Box Integration Settings
+box:
+  # Webhook configuration
+  webhook:
+    verify_signatures: true
+    max_payload_size: 10485760  # 10MB
+
+  # File filtering
+  file_filters:
+    extensions:
+      - "docx"
+      - "pdf"
+    max_file_size_mb: 50
+    exclude_patterns:
+      - "~$*"  # Temporary files
+      - "*.tmp"
+
+  # Folder structure
+  folders:
+    drafts: "drafts"
+    qa_checks: "qa-checks"
+    archive: "archive"
+
+# Document Processing Settings
+processing:
+  # Text extraction
+  text_extraction:
+    pdf_max_pages: 500
+    preserve_formatting: true
+    encoding: "utf-8"
+
+  # Citation extraction
+  citation:
+    min_confidence: 0.7
+    extract_short_citations: true
+    extract_id_citations: true
+    extract_supra_citations: true
+
+  # Quote matching
+  quote_matching:
+    exact_threshold: 98.0
+    high_threshold: 90.0
+    medium_threshold: 80.0
+    min_threshold: 75.0
+    context_window: 500
+    max_quote_length: 5000
+
+  # Parallel citations
+  parallel_citations:
+    auto_suggest: true
+    check_state_courts: true
+    check_federal_courts: false
+
+# Report Generation Settings
+reports:
+  # Output formats
+  formats:
+    - "json"
+    - "html"
+
+  # JSON settings
+  json:
+    pretty_print: true
+    include_metadata: true
+    sign_reports: true
+
+  # HTML settings
+  html:
+    include_inline_css: true
+    responsive_design: true
+    show_full_quotes: true
+    max_flags_displayed: 50
+
+# Git Audit Trail Settings
+git_audit:
+  auto_commit: true
+  auto_push: true
+  branch: "main"
+  commit_author_name: "Citation QA System"
+  commit_author_email: "qa@example.com"
+  max_commits_before_push: 10
+  retention_days: 0  # 0 = infinite
+
+# Webhook Server Settings
+webhook_server:
+  host: "0.0.0.0"
+  port: 8000
+  workers: 4
+  max_requests: 1000
+  timeout: 300
+
+  # Security
+  cors:
+    enabled: false
+    allowed_origins: []
+
+  # Rate limiting
+  rate_limit:
+    enabled: true
+    requests_per_minute: 60
+
+# Storage Settings
+storage:
+  # Local storage
+  output_dir: "/data/reports"
+  temp_dir: "/tmp/citation-qa"
+
+  # Retention policy
+  retention:
+    reports_days: 90
+    temp_files_hours: 24
+
+  # Cleanup
+  auto_cleanup: true
+  cleanup_schedule: "0 2 * * *"  # Daily at 2 AM
+
+# Performance Settings
+performance:
+  max_concurrent_jobs: 5
+  job_timeout_seconds: 600
+  cache_enabled: true
+  cache_ttl_seconds: 3600
+
+# Notification Settings (Optional)
+notifications:
+  enabled: false
+  channels:
+    email:
+      enabled: false
+      smtp_host: "smtp.example.com"
+      smtp_port: 587
+      from_address: "qa@example.com"
+      recipients: []
+
+    slack:
+      enabled: false
+      webhook_url: ""
+      channel: "#qa-alerts"
+
+    webhook:
+      enabled: false
+      url: ""
+      method: "POST"
+
+# Feature Flags
+features:
+  enable_parallel_citation_checking: true
+  enable_quote_matching: true
+  enable_pinpoint_verification: true
+  enable_box_integration: true
+  enable_git_audit: true
+  enable_report_signing: true
+  enable_auto_upload: false
+
+# Validation Rules
+validation:
+  # Citation validation
+  citation:
+    require_volume: true
+    require_reporter: true
+    require_page: true
+    require_year_for_old_cases: false
+
+  # Quote validation
+  quote:
+    min_length: 10
+    max_length: 5000
+    flag_excessive_alterations: true
+    max_alterations: 5
+    flag_excessive_ellipses: true
+    max_ellipses: 3
+
+  # Document validation
+  document:
+    min_citations: 0
+    min_quotes: 0
+    warn_if_no_citations: true
+    warn_if_no_quotes: true
+
+# Error Handling
+error_handling:
+  retry_failed_lookups: true
+  max_retries: 3
+  continue_on_error: true
+  generate_partial_reports: true
+  log_errors_to_file: true
+
+# Development/Testing Settings
+development:
+  use_mock_services: false
+  mock_courtlistener: false
+  mock_box: false
+  mock_git: false
+  save_debug_output: false
+  debug_output_dir: "/tmp/debug"

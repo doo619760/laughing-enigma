@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  citation-qa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: citation-qa-worker
+    restart: unless-stopped
+
+    # Environment variables
+    env_file:
+      - .env
+
+    # Ports
+    ports:
+      - "${PORT:-8000}:8000"
+
+    # Volumes
+    volumes:
+      # Persistent data
+      - qa-reports:/data/reports
+      - qa-audit:/data/audit
+
+      # Optional: mount config for easy updates
+      - ./config:/app/config:ro
+
+      # Optional: mount logs
+      - qa-logs:/var/log/citation-qa
+
+    # Resource limits
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 4G
+        reservations:
+          cpus: '1.0'
+          memory: 2G
+
+    # Health check
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+    # Logging
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "100m"
+        max-file: "5"
+
+    # Network
+    networks:
+      - citation-qa-network
+
+# Volumes
+volumes:
+  qa-reports:
+    driver: local
+  qa-audit:
+    driver: local
+  qa-logs:
+    driver: local
+
+# Networks
+networks:
+  citation-qa-network:
+    driver: bridge

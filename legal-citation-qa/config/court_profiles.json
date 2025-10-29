@@ -1,0 +1,188 @@
+{
+  "version": "1.0",
+  "description": "Court-specific configuration for parallel citation requirements and validation rules",
+  "profiles": {
+    "california_supreme": {
+      "jurisdiction": "California",
+      "court_type": "supreme",
+      "court_name": "Supreme Court of California",
+      "official_reporters": ["Cal.", "Cal. 2d", "Cal. 3d", "Cal. 4th", "Cal. 5th"],
+      "parallel_reporters": [
+        "P.", "P.2d", "P.3d",
+        "Cal. Rptr.", "Cal. Rptr. 2d", "Cal. Rptr. 3d"
+      ],
+      "parallel_requirement": "required",
+      "notes": "Cal. Rules of Court Rule 1.200 requires parallel citations for all California Supreme Court cases",
+      "bluebook_rule": "10.3.1(b)",
+      "local_rules_url": "https://www.courts.ca.gov/rules.htm",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    },
+    "california_appellate": {
+      "jurisdiction": "California",
+      "court_type": "appellate",
+      "court_name": "California Courts of Appeal",
+      "official_reporters": [
+        "Cal. App.", "Cal. App. 2d", "Cal. App. 3d",
+        "Cal. App. 4th", "Cal. App. 5th"
+      ],
+      "parallel_reporters": [
+        "Cal. Rptr.", "Cal. Rptr. 2d", "Cal. Rptr. 3d",
+        "P.2d", "P.3d"
+      ],
+      "parallel_requirement": "required",
+      "notes": "Cal. Rules of Court require parallel citations for Courts of Appeal",
+      "bluebook_rule": "10.3.1(b)",
+      "local_rules_url": "https://www.courts.ca.gov/rules.htm",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    },
+    "ninth_circuit": {
+      "jurisdiction": "Ninth Circuit",
+      "court_type": "circuit",
+      "court_name": "United States Court of Appeals for the Ninth Circuit",
+      "official_reporters": ["F.", "F.2d", "F.3d", "F.4th"],
+      "parallel_reporters": [],
+      "parallel_requirement": "optional",
+      "notes": "Federal circuit courts do not typically require parallel citations",
+      "bluebook_rule": "10.3.1(a)",
+      "local_rules_url": "https://www.ca9.uscourts.gov/rules/",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    },
+    "district_southern_california": {
+      "jurisdiction": "S.D. Cal.",
+      "court_type": "district",
+      "court_name": "United States District Court for the Southern District of California",
+      "official_reporters": ["F. Supp.", "F. Supp. 2d", "F. Supp. 3d"],
+      "parallel_reporters": [],
+      "parallel_requirement": "optional",
+      "notes": "District courts do not require parallel citations. Check local rules for specific requirements.",
+      "bluebook_rule": "10.3.1(a)",
+      "local_rules_url": "https://www.casd.uscourts.gov/rules/local-rules",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    },
+    "us_supreme_court": {
+      "jurisdiction": "United States",
+      "court_type": "supreme",
+      "court_name": "Supreme Court of the United States",
+      "official_reporters": ["U.S."],
+      "parallel_reporters": ["S. Ct.", "L. Ed.", "L. Ed. 2d"],
+      "parallel_requirement": "optional",
+      "notes": "Bluebook Rule 10.3.1(a) makes parallel citations optional for U.S. Supreme Court",
+      "bluebook_rule": "10.3.1(a)",
+      "local_rules_url": "https://www.supremecourt.gov/filingandrules/rules_guidance.aspx",
+      "quote_match_threshold": 99.0,
+      "allow_alterations": true,
+      "max_ellipses": 2
+    },
+    "new_york_appellate": {
+      "jurisdiction": "New York",
+      "court_type": "appellate",
+      "court_name": "New York Court of Appeals and Appellate Division",
+      "official_reporters": ["N.Y.", "N.Y.2d", "N.Y.3d", "A.D.", "A.D.2d", "A.D.3d"],
+      "parallel_reporters": [
+        "N.E.", "N.E.2d", "N.E.3d",
+        "N.Y.S.", "N.Y.S.2d", "N.Y.S.3d"
+      ],
+      "parallel_requirement": "required",
+      "notes": "New York Rules of Court require parallel citations",
+      "bluebook_rule": "10.3.1(b)",
+      "local_rules_url": "https://www.nycourts.gov/rules/",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    },
+    "texas_supreme": {
+      "jurisdiction": "Texas",
+      "court_type": "supreme",
+      "court_name": "Supreme Court of Texas",
+      "official_reporters": ["Tex."],
+      "parallel_reporters": ["S.W.", "S.W.2d", "S.W.3d"],
+      "parallel_requirement": "recommended",
+      "notes": "Texas practice varies; parallel citations are recommended but not always required",
+      "bluebook_rule": "10.3.1(b)",
+      "local_rules_url": "https://www.txcourts.gov/supreme/rules/",
+      "quote_match_threshold": 98.0,
+      "allow_alterations": true,
+      "max_ellipses": 3
+    }
+  },
+  "default_settings": {
+    "quote_match_threshold": 98.0,
+    "allow_alterations": true,
+    "max_ellipses": 3,
+    "require_pinpoint_verification": true,
+    "flag_nested_quotes": true,
+    "flag_block_quotes": false,
+    "minimum_quote_length": 10
+  },
+  "validation_rules": {
+    "citation_format": {
+      "require_volume": true,
+      "require_reporter": true,
+      "require_page": true,
+      "allow_short_citations": true,
+      "allow_id_citations": true
+    },
+    "quote_validation": {
+      "exact_match_threshold": 98.0,
+      "high_match_threshold": 90.0,
+      "medium_match_threshold": 80.0,
+      "min_acceptable_threshold": 80.0,
+      "flag_alterations": true,
+      "flag_ellipses": true
+    },
+    "parallel_citations": {
+      "auto_suggest": true,
+      "require_for_state_courts": true,
+      "require_for_federal_courts": false
+    }
+  },
+  "reporter_abbreviations": {
+    "U.S.": "United States Reports",
+    "S. Ct.": "Supreme Court Reporter",
+    "L. Ed.": "Lawyers' Edition",
+    "L. Ed. 2d": "Lawyers' Edition, Second Series",
+    "F.": "Federal Reporter",
+    "F.2d": "Federal Reporter, Second Series",
+    "F.3d": "Federal Reporter, Third Series",
+    "F.4th": "Federal Reporter, Fourth Series",
+    "F. Supp.": "Federal Supplement",
+    "F. Supp. 2d": "Federal Supplement, Second Series",
+    "F. Supp. 3d": "Federal Supplement, Third Series",
+    "Cal.": "California Reports",
+    "Cal. 2d": "California Reports, Second Series",
+    "Cal. 3d": "California Reports, Third Series",
+    "Cal. 4th": "California Reports, Fourth Series",
+    "Cal. 5th": "California Reports, Fifth Series",
+    "Cal. App.": "California Appellate Reports",
+    "Cal. App. 2d": "California Appellate Reports, Second Series",
+    "Cal. App. 3d": "California Appellate Reports, Third Series",
+    "Cal. App. 4th": "California Appellate Reports, Fourth Series",
+    "Cal. App. 5th": "California Appellate Reports, Fifth Series",
+    "Cal. Rptr.": "California Reporter",
+    "Cal. Rptr. 2d": "California Reporter, Second Series",
+    "Cal. Rptr. 3d": "California Reporter, Third Series",
+    "P.": "Pacific Reporter",
+    "P.2d": "Pacific Reporter, Second Series",
+    "P.3d": "Pacific Reporter, Third Series",
+    "N.Y.": "New York Reports",
+    "N.Y.2d": "New York Reports, Second Series",
+    "N.Y.3d": "New York Reports, Third Series",
+    "N.E.": "North Eastern Reporter",
+    "N.E.2d": "North Eastern Reporter, Second Series",
+    "N.E.3d": "North Eastern Reporter, Third Series",
+    "N.Y.S.": "New York Supplement",
+    "N.Y.S.2d": "New York Supplement, Second Series",
+    "N.Y.S.3d": "New York Supplement, Third Series",
+    "S.W.": "South Western Reporter",
+    "S.W.2d": "South Western Reporter, Second Series",
+    "S.W.3d": "South Western Reporter, Third Series"
+  }
+}
