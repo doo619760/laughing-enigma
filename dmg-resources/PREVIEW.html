@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Classic WordPerfect DMG Preview</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        h1 {
+            color: #0055AA;
+            font-family: 'Courier New', Courier, monospace;
+            text-align: center;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .dmg-preview {
+            border: 2px solid #ccc;
+            border-radius: 8px;
+            overflow: hidden;
+            margin: 20px 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .dmg-preview img {
+            width: 100%;
+            display: block;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature {
+            padding: 20px;
+            background: linear-gradient(135deg, #0055AA, #003377);
+            color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .feature h3 {
+            margin-top: 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 18px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 10px;
+        }
+
+        .color-palette {
+            display: flex;
+            gap: 10px;
+            margin: 20px 0;
+            flex-wrap: wrap;
+        }
+
+        .color-swatch {
+            flex: 1;
+            min-width: 100px;
+            height: 80px;
+            border-radius: 8px;
+            display: flex;
+            align-items: flex-end;
+            padding: 10px;
+            color: white;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+
+        .instructions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-left: 4px solid #0055AA;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .instructions code {
+            background: #e9ecef;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: 'Courier New', monospace;
+            color: #0055AA;
+        }
+
+        .button {
+            display: inline-block;
+            background: #0055AA;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            margin: 5px;
+            transition: background 0.3s;
+        }
+
+        .button:hover {
+            background: #003377;
+        }
+
+        .wp-title {
+            text-align: center;
+            background: linear-gradient(to bottom, #0066CC, #0055AA, #003377);
+            color: white;
+            padding: 15px;
+            margin: -30px -30px 30px -30px;
+            border-radius: 12px 12px 0 0;
+        }
+
+        .wp-title h2 {
+            margin: 0;
+            font-family: 'Courier New', Courier, monospace;
+            letter-spacing: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="wp-title">
+            <h2>Classic WordPerfect Style DMG</h2>
+        </div>
+
+        <h1>GeoStalker Installer Preview</h1>
+        <div class="subtitle">Authentic 1990s WordPerfect Aesthetic for macOS</div>
+
+        <div class="dmg-preview">
+            <object data="dmg-background-enhanced.svg" type="image/svg+xml" width="100%" height="400">
+                <img src="dmg-background.svg" alt="DMG Background Preview">
+            </object>
+        </div>
+
+        <div class="instructions">
+            <h3>🚀 Quick Start</h3>
+            <p>Build the DMG on macOS using:</p>
+            <code>make dmg</code> or <code>./build-dmg-simple.sh</code>
+            <p style="margin-top: 15px;">The resulting DMG will feature the classic WordPerfect blue interface!</p>
+        </div>
+
+        <h2 style="color: #0055AA; margin-top: 40px;">Design Features</h2>
+
+        <div class="features">
+            <div class="feature">
+                <h3>🎨 Authentic Colors</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Classic WP blue gradient</li>
+                    <li>Professional typography</li>
+                    <li>Period-accurate styling</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h3>📐 Clean Layout</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>600x400 window</li>
+                    <li>72pt icon size</li>
+                    <li>Professional spacing</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h3>💾 Easy Install</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>Drag & drop interface</li>
+                    <li>Clear instructions</li>
+                    <li>Professional branding</li>
+                </ul>
+            </div>
+
+            <div class="feature">
+                <h3>⚡ Terminal UI</h3>
+                <ul style="margin: 10px 0; padding-left: 20px;">
+                    <li>WP-themed launcher</li>
+                    <li>Classic blue menus</li>
+                    <li>Retro experience</li>
+                </ul>
+            </div>
+        </div>
+
+        <h2 style="color: #0055AA; margin-top: 40px;">WordPerfect Color Palette</h2>
+
+        <div class="color-palette">
+            <div class="color-swatch" style="background: #0066CC;">
+                #0066CC<br>Light Blue
+            </div>
+            <div class="color-swatch" style="background: #0055AA;">
+                #0055AA<br>Primary
+            </div>
+            <div class="color-swatch" style="background: #004499;">
+                #004499<br>Medium
+            </div>
+            <div class="color-swatch" style="background: #003377;">
+                #003377<br>Dark Blue
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 40px; padding: 30px; background: #f8f9fa; border-radius: 8px;">
+            <h3 style="color: #0055AA; margin-top: 0;">Build Your Classic DMG</h3>
+            <p>All files are ready to create your WordPerfect-style installer</p>
+            <a href="../DMG-README.md" class="button">📖 Read Documentation</a>
+            <a href="#" class="button" onclick="alert('Run: make dmg\n\nOr use build-dmg-simple.sh on macOS'); return false;">🛠️ Build Instructions</a>
+        </div>
+
+        <div style="margin-top: 30px; padding: 20px; border-top: 2px solid #0055AA;">
+            <p style="text-align: center; color: #666; margin: 0;">
+                <strong>Classic WordPerfect Styling</strong><br>
+                Bringing professional 1990s software aesthetics to modern macOS installers<br>
+                <span style="font-family: 'Courier New', monospace; color: #0055AA;">Follow @osintstalker for updates</span>
+            </p>
+        </div>
+    </div>
+</body>
+</html>

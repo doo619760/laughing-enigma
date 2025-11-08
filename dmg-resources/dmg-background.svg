@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="600" height="400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Classic WordPerfect blue gradient background -->
+  <defs>
+    <linearGradient id="wpBlue" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0055AA;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#003377;stop-opacity:1" />
+    </linearGradient>
+    <filter id="shadow">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="600" height="400" fill="url(#wpBlue)"/>
+
+  <!-- Decorative top bar - WordPerfect style -->
+  <rect x="0" y="0" width="600" height="40" fill="#004499" opacity="0.7"/>
+  <rect x="0" y="40" width="600" height="2" fill="#FFFFFF" opacity="0.3"/>
+
+  <!-- Title text in classic WordPerfect style -->
+  <text x="300" y="28" font-family="Courier, monospace" font-size="20" font-weight="bold"
+        fill="#FFFFFF" text-anchor="middle" letter-spacing="2">
+    GeoStalker OSINT Tools
+  </text>
+
+  <!-- Classic WP pattern - subtle grid -->
+  <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+    <rect width="20" height="20" fill="none"/>
+    <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#FFFFFF" stroke-width="0.5" opacity="0.1"/>
+  </pattern>
+  <rect width="600" height="400" fill="url(#grid)"/>
+
+  <!-- Installation instructions box -->
+  <rect x="30" y="80" width="540" height="280" rx="8" fill="#FFFFFF" opacity="0.95" filter="url(#shadow)"/>
+  <rect x="30" y="80" width="540" height="35" rx="8" fill="#0055AA" opacity="0.9"/>
+  <text x="300" y="104" font-family="Helvetica, Arial, sans-serif" font-size="16" font-weight="bold"
+        fill="#FFFFFF" text-anchor="middle">
+    Installation Instructions
+  </text>
+
+  <!-- Instructions text -->
+  <text x="50" y="145" font-family="Courier, monospace" font-size="13" fill="#003377" font-weight="bold">
+    1. Drag GeoStalker to Applications folder
+  </text>
+  <text x="50" y="175" font-family="Courier, monospace" font-size="13" fill="#003377" font-weight="bold">
+    2. Install Python dependencies (see README)
+  </text>
+  <text x="50" y="205" font-family="Courier, monospace" font-size="13" fill="#003377" font-weight="bold">
+    3. Configure API keys in the scripts
+  </text>
+  <text x="50" y="235" font-family="Courier, monospace" font-size="13" fill="#003377" font-weight="bold">
+    4. Run from Terminal or Applications
+  </text>
+
+  <!-- Bottom note in classic style -->
+  <text x="300" y="290" font-family="Helvetica, Arial, sans-serif" font-size="11"
+        fill="#0055AA" text-anchor="middle" font-style="italic">
+    Open Source Intelligence Tools for Security Research
+  </text>
+
+  <text x="300" y="330" font-family="Courier, monospace" font-size="10"
+        fill="#666666" text-anchor="middle">
+    Follow @osintstalker for updates
+  </text>
+
+  <!-- Classic WP corner decoration -->
+  <rect x="545" y="345" width="50" height="50" fill="#0055AA" opacity="0.2"/>
+  <rect x="5" y="345" width="50" height="50" fill="#0055AA" opacity="0.2"/>
+</svg>

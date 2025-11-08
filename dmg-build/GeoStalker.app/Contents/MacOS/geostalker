@@ -1,0 +1,85 @@
+#!/bin/bash
+
+# GeoStalker Launcher
+# Classic WordPerfect style terminal interface
+
+# Get the directory where this script is located
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+RESOURCES_DIR="$DIR/../Resources"
+
+# Classic WordPerfect blue color codes for terminal
+WP_BLUE='\033[0;34m'
+WP_BRIGHT_BLUE='\033[1;34m'
+WP_WHITE='\033[1;37m'
+NC='\033[0m' # No Color
+
+clear
+
+# Display classic WordPerfect-style header
+echo -e "${WP_BRIGHT_BLUE}"
+echo "════════════════════════════════════════════════════════════════"
+echo "              GeoStalker OSINT Tools v1.0                       "
+echo "════════════════════════════════════════════════════════════════"
+echo -e "${NC}"
+echo ""
+echo -e "${WP_WHITE}Open Source Intelligence Tool for Geolocation${NC}"
+echo -e "${WP_BLUE}Follow @osintstalker for updates${NC}"
+echo ""
+echo "════════════════════════════════════════════════════════════════"
+echo ""
+
+# Check for Python
+if ! command -v python2.7 &> /dev/null && ! command -v python2 &> /dev/null; then
+    echo -e "${WP_BRIGHT_BLUE}ERROR:${NC} Python 2.7 is required but not found."
+    echo "Please install Python 2.7 to continue."
+    echo ""
+    read -p "Press Enter to exit..."
+    exit 1
+fi
+
+# Choose which tool to run
+echo -e "${WP_WHITE}Select a tool:${NC}"
+echo "  1) GeoStalker - Geolocation OSINT"
+echo "  2) FBStalker - Facebook OSINT"
+echo "  3) View README"
+echo "  4) Exit"
+echo ""
+read -p "Enter choice [1-4]: " choice
+
+case $choice in
+    1)
+        echo -e "${WP_BRIGHT_BLUE}Launching GeoStalker...${NC}"
+        cd "$RESOURCES_DIR"
+        if [ -f "geostalker.py" ]; then
+            python2.7 geostalker.py
+        else
+            echo "Error: geostalker.py not found"
+        fi
+        ;;
+    2)
+        echo -e "${WP_BRIGHT_BLUE}Launching FBStalker...${NC}"
+        cd "$RESOURCES_DIR"
+        if [ -f "fbstalker1.py" ]; then
+            python2.7 fbstalker1.py "$@"
+        else
+            echo "Error: fbstalker1.py not found"
+        fi
+        ;;
+    3)
+        if [ -f "$RESOURCES_DIR/README" ]; then
+            less "$RESOURCES_DIR/README"
+        else
+            echo "README not found"
+        fi
+        ;;
+    4)
+        echo "Exiting..."
+        exit 0
+        ;;
+    *)
+        echo "Invalid choice"
+        ;;
+esac
+
+echo ""
+read -p "Press Enter to exit..."
