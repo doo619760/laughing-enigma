@@ -41,13 +41,49 @@ Or install manually:
 pip install python-docx
 ```
 
-## Usage
+## Usage Options
 
-### Running the Program
+You can use this complaint generator in three ways:
+
+1. **Python Program** (this file) - Direct command-line usage
+2. **Claude Code Skill** - Guided assistance with Claude Code
+3. **Custom GPT** - Browser-based ChatGPT assistant
+
+See the [.claude/README.md](./.claude/README.md) file for details on the AI assistant options.
+
+### Running the Program Directly
 
 ```bash
 python3 demand_to_complaint.py
 ```
+
+### Using with Claude Code
+
+If you're using Claude Code, you can get guided assistance:
+
+```
+/skill complaint-generator
+```
+
+Or simply ask Claude for help converting a demand letter to a complaint. The skill will guide you through:
+- Checking dependencies
+- Running the program
+- Reviewing output
+- Customizing the complaint
+- Quality control
+
+See [.claude/skills/complaint-generator.md](./.claude/skills/complaint-generator.md) for details.
+
+### Using with Custom GPT
+
+You can create a Custom GPT in ChatGPT for browser-based assistance:
+
+1. Create a new Custom GPT in ChatGPT
+2. Use the system prompt from [.claude/GPT_SYSTEM_PROMPT.md](./.claude/GPT_SYSTEM_PROMPT.md)
+3. Upload your demand letter to the GPT
+4. Get a formatted complaint draft
+
+The GPT version doesn't require Python and works from any device with a browser.
 
 ### Step-by-Step Process
 
