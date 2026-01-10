@@ -1,0 +1,9 @@
+# California Court Case Tracker Requirements
+# No external dependencies required - uses Python standard library only
+
+# Optional development dependencies:
+# pytest>=7.0.0  # For running tests
+# pytest-cov>=4.0.0  # For coverage reports
+# mypy>=1.0.0  # For type checking
+# black>=23.0.0  # For code formatting
+# flake8>=6.0.0  # For linting
