@@ -1,0 +1,68 @@
+{
+  "name": "box-discovery",
+  "version": "1.0.0",
+  "description": "Read case files from Box.com and draft legal discovery requests and responses",
+  "author": "Claude Code",
+  "prompt_file": "SKILL_PROMPT.md",
+  "entry_point": "skill.py",
+  "commands": [
+    {
+      "name": "analyze",
+      "description": "Analyze case files and show summary",
+      "usage": "/box-discovery analyze --folder <folder_id>"
+    },
+    {
+      "name": "interrogatories",
+      "description": "Generate interrogatories",
+      "usage": "/box-discovery interrogatories --folder <folder_id> [--role plaintiff|defendant]"
+    },
+    {
+      "name": "rfp",
+      "description": "Generate requests for production",
+      "usage": "/box-discovery rfp --folder <folder_id> [--role plaintiff|defendant]"
+    },
+    {
+      "name": "rfa",
+      "description": "Generate requests for admission",
+      "usage": "/box-discovery rfa --folder <folder_id> [--role plaintiff|defendant]"
+    },
+    {
+      "name": "respond",
+      "description": "Draft responses to discovery",
+      "usage": "/box-discovery respond --folder <folder_id> --type interrogatories|rfp|rfa"
+    }
+  ],
+  "environment": {
+    "required": [
+      {
+        "name": "BOX_ACCESS_TOKEN",
+        "description": "Box.com OAuth 2.0 access token",
+        "alternative": "BOX_DEVELOPER_TOKEN"
+      }
+    ],
+    "optional": [
+      {
+        "name": "BOX_CLIENT_ID",
+        "description": "Box.com OAuth client ID"
+      },
+      {
+        "name": "BOX_CLIENT_SECRET",
+        "description": "Box.com OAuth client secret"
+      }
+    ]
+  },
+  "capabilities": [
+    "read_box_files",
+    "parse_legal_documents",
+    "generate_discovery",
+    "draft_responses"
+  ],
+  "supported_formats": [
+    ".pdf",
+    ".doc",
+    ".docx",
+    ".txt",
+    ".rtf",
+    ".odt"
+  ]
+}

@@ -1,0 +1,11 @@
+# Box Discovery Skill Dependencies
+# Core dependencies are part of Python standard library
+
+# Optional: For enhanced PDF support (if Box text extraction is insufficient)
+# pypdf>=3.0.0
+
+# Optional: For Word document support
+# python-docx>=0.8.11
+
+# Optional: For RTF support
+# striprtf>=0.0.26
