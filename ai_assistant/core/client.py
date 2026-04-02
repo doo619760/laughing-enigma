@@ -1,4 +1,4 @@
-"""Claude API client with tool integration."""
+"""Claude API client with tool integration and computer use support."""
 
 import json
 from typing import Generator
@@ -8,9 +8,10 @@ import anthropic
 from .config import Config
 from .conversation import Conversation
 from ..tools import calculator, file_reader, task_manager, code_helper, web_search, datetime_tool
+from ..tools import computer_use
 
 
-# Registry of all available tools
+# Registry of all standard tools
 TOOLS = {
     "calculator": calculator,
     "file_reader": file_reader,
@@ -22,14 +23,20 @@ TOOLS = {
 
 TOOL_DEFINITIONS = [module.TOOL_DEFINITION for module in TOOLS.values()]
 
+# Computer use beta configuration
+COMPUTER_USE_BETA = "computer-use-2025-01-24"
+COMPUTER_USE_TOOL_TYPE = "computer_20250124"
+
 
 class AssistantClient:
-    """Claude-powered AI assistant with tool use."""
+    """Claude-powered AI assistant with tool use and computer control."""
 
     def __init__(self, config: Config):
         self.config = config
         self.client = anthropic.Anthropic(api_key=config.api_key)
         self.conversation = Conversation()
+        self.computer_use_enabled = False
+        self._screen_size = (1024, 768)
 
     def load_conversation(self, conversation_id: str):
         """Load an existing conversation."""
@@ -39,14 +46,90 @@ class AssistantClient:
         """Start a fresh conversation."""
         self.conversation = Conversation()
 
-    def _execute_tool(self, tool_name: str, tool_input: dict) -> str:
-        """Execute a tool and return the result."""
+    def enable_computer_use(self):
+        """Enable computer use mode."""
+        self.computer_use_enabled = True
+        self._screen_size = computer_use._get_screen_size()
+
+    def disable_computer_use(self):
+        """Disable computer use mode."""
+        self.computer_use_enabled = False
+
+    def _get_tools(self) -> list:
+        """Get the tool definitions for the current mode."""
+        tools = list(TOOL_DEFINITIONS)
+        if self.computer_use_enabled:
+            tools.append({
+                "type": COMPUTER_USE_TOOL_TYPE,
+                "name": "computer",
+                "display_width_px": self._screen_size[0],
+                "display_height_px": self._screen_size[1],
+            })
+        return tools
+
+    def _get_betas(self) -> list:
+        """Get beta flags if needed."""
+        if self.computer_use_enabled:
+            return [COMPUTER_USE_BETA]
+        return []
+
+    def _execute_tool(self, tool_name: str, tool_input: dict) -> dict:
+        """Execute a tool and return the result.
+
+        Returns either a string or a list of content blocks (for screenshots).
+        """
+        if tool_name == "computer":
+            return self._execute_computer_action(tool_input)
+
         if tool_name in TOOLS:
             try:
-                return TOOLS[tool_name].handle(tool_input)
+                return {"text": TOOLS[tool_name].handle(tool_input)}
             except Exception as e:
-                return f"Tool error ({tool_name}): {e}"
-        return f"Unknown tool: {tool_name}"
+                return {"text": f"Tool error ({tool_name}): {e}", "is_error": True}
+
+        return {"text": f"Unknown tool: {tool_name}", "is_error": True}
+
+    def _execute_computer_action(self, tool_input: dict) -> dict:
+        """Execute a computer use action and return result with optional screenshot."""
+        action = tool_input.get("action", "screenshot")
+        result = computer_use.handle_computer_action(action, tool_input)
+
+        response = {
+            "text": result["text"],
+            "is_error": result.get("is_error", False),
+        }
+
+        # Include screenshot data if available
+        if result.get("screenshot") and result["screenshot"].get("success"):
+            response["screenshot"] = result["screenshot"]
+
+        return response
+
+    def _build_tool_result_content(self, tool_name: str, result: dict) -> list:
+        """Build the content blocks for a tool result message."""
+        content = []
+
+        # Add screenshot image if present
+        if "screenshot" in result and result["screenshot"]:
+            ss = result["screenshot"]
+            content.append({
+                "type": "image",
+                "source": {
+                    "type": "base64",
+                    "media_type": "image/png",
+                    "data": ss["data"],
+                },
+            })
+
+        # Add text
+        if result.get("text"):
+            content.append({"type": "text", "text": result["text"]})
+
+        # If no content blocks, return just the text
+        if not content:
+            return result.get("text", "No result")
+
+        return content
 
     def chat(self, user_message: str) -> Generator[dict, None, None]:
         """Send a message and yield response events.
@@ -54,7 +137,7 @@ class AssistantClient:
         Yields dicts with keys:
           - {"type": "text", "content": "..."} for text chunks
           - {"type": "tool_use", "name": "...", "input": {...}} when a tool is called
-          - {"type": "tool_result", "name": "...", "result": "..."} with tool output
+          - {"type": "tool_result", "name": "...", "result": "...", "screenshot": ...}
           - {"type": "done", "full_response": "..."} when complete
           - {"type": "error", "message": "..."} on errors
         """
@@ -72,10 +155,87 @@ class AssistantClient:
 
     def _run_turn(self, messages: list) -> Generator[dict, None, None]:
         """Run a single API turn, handling tool use recursively."""
-        if self.config.stream_responses:
+        # Computer use requires the beta API without streaming
+        if self.computer_use_enabled:
+            yield from self._run_computer_use(messages)
+        elif self.config.stream_responses:
             yield from self._run_streamed(messages)
         else:
             yield from self._run_sync(messages)
+
+    def _run_computer_use(self, messages: list) -> Generator[dict, None, None]:
+        """Run with computer use beta API (no streaming for beta)."""
+        tools = self._get_tools()
+        betas = self._get_betas()
+
+        response = self.client.beta.messages.create(
+            model=self.config.model,
+            max_tokens=self.config.max_tokens,
+            system=self.config.system_prompt,
+            messages=messages,
+            tools=tools,
+            betas=betas,
+            temperature=self.config.temperature,
+        )
+
+        full_text = ""
+        tool_uses = []
+
+        for block in response.content:
+            if block.type == "text":
+                full_text += block.text
+                yield {"type": "text", "content": block.text}
+            elif block.type == "tool_use":
+                tool_uses.append(block)
+
+        if tool_uses:
+            # Build assistant response content
+            assistant_content = []
+            if full_text:
+                assistant_content.append({"type": "text", "text": full_text})
+
+            tool_results = []
+            for block in tool_uses:
+                assistant_content.append({
+                    "type": "tool_use",
+                    "id": block.id,
+                    "name": block.name,
+                    "input": block.input,
+                })
+
+                yield {"type": "tool_use", "name": block.name, "input": block.input}
+
+                # Execute the tool
+                result = self._execute_tool(block.name, block.input)
+                content = self._build_tool_result_content(block.name, result)
+
+                yield {
+                    "type": "tool_result",
+                    "name": block.name,
+                    "result": result.get("text", ""),
+                    "screenshot": result.get("screenshot"),
+                }
+
+                tool_result_msg = {
+                    "type": "tool_result",
+                    "tool_use_id": block.id,
+                    "content": content,
+                }
+                if result.get("is_error"):
+                    tool_result_msg["is_error"] = True
+
+                tool_results.append(tool_result_msg)
+
+            messages.append({"role": "assistant", "content": assistant_content})
+            messages.append({"role": "user", "content": tool_results})
+
+            # Continue the loop
+            yield from self._run_turn(messages)
+        else:
+            self.conversation.add_message("assistant", full_text)
+            if self.config.save_conversations:
+                self.conversation.save()
+            yield {"type": "done", "full_response": full_text}
 
     def _run_streamed(self, messages: list) -> Generator[dict, None, None]:
         """Run with streaming enabled."""
@@ -110,7 +270,6 @@ class AssistantClient:
 
         # Handle tool use if any
         if tool_uses:
-            # Build the assistant message with all content blocks
             assistant_content = []
             if full_text:
                 assistant_content.append({"type": "text", "text": full_text})
@@ -132,22 +291,23 @@ class AssistantClient:
                 yield {"type": "tool_use", "name": tool["name"], "input": tool_input}
 
                 result = self._execute_tool(tool["name"], tool_input)
-                yield {"type": "tool_result", "name": tool["name"], "result": result}
+                yield {
+                    "type": "tool_result",
+                    "name": tool["name"],
+                    "result": result.get("text", str(result)),
+                }
 
                 tool_results.append({
                     "type": "tool_result",
                     "tool_use_id": tool["id"],
-                    "content": result,
+                    "content": result.get("text", str(result)),
                 })
 
-            # Continue the conversation with tool results
             messages.append({"role": "assistant", "content": assistant_content})
             messages.append({"role": "user", "content": tool_results})
 
-            # Recursive call for follow-up
             yield from self._run_turn(messages)
         else:
-            # No tool use - we're done
             self.conversation.add_message("assistant", full_text)
             if self.config.save_conversations:
                 self.conversation.save()
@@ -191,12 +351,16 @@ class AssistantClient:
                 yield {"type": "tool_use", "name": block.name, "input": block.input}
 
                 result = self._execute_tool(block.name, block.input)
-                yield {"type": "tool_result", "name": block.name, "result": result}
+                yield {
+                    "type": "tool_result",
+                    "name": block.name,
+                    "result": result.get("text", str(result)),
+                }
 
                 tool_results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
-                    "content": result,
+                    "content": result.get("text", str(result)),
                 })
 
             messages.append({"role": "assistant", "content": assistant_content})

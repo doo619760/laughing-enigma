@@ -11,12 +11,16 @@ requires-python = ">=3.9"
 license = {text = "MIT"}
 dependencies = [
     "anthropic>=0.39.0",
+    "Pillow>=9.0",
 ]
 
 [project.optional-dependencies]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
+]
+computer-use = [
+    "Pillow>=9.0",
 ]
 
 [project.scripts]
