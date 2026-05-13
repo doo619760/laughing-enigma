@@ -146,3 +146,7 @@ MMMMMMMMMIMMMMMMMMMMMMMMMMMM8IMMMMMMMMMM
 
 Please enter an address or GPS coordinates (e.g. 4.237588,101.131332):______________
 
+------------------------------------------------------------------------------------------
+Legal Citation Verification Workflow
+A Chrome-and-Judicata workflow for checking California case citations, pinpoint citations, quotations, and paraphrases is available at docs/judicata-citation-check-workflow.md. A review-log template is available at templates/citation-review-log.csv.
+
